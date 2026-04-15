@@ -2,6 +2,10 @@
 *.gearlang
 out
 
+package-lock.json
+server/package-lock.json
+client/package-lock.json
+
 node_modules
 client/node_modules
 server/node_mocules
@@ -9,8 +13,6 @@ server/node_mocules
 
 extension.js
 
+GearLang_container/
 
-PROMPT.md
-COMPLETED.md
-
-GearLang-Container
+tree.txt

@@ -1,13 +1,18 @@
-import { analyze } from "./analyzer/analyzer";
-import { SymbolTable } from "./analyzer/symbolTable";
-import { tokenize } from "./scanner/tokenizer";
+import koffii from "koffi";
 import * as lsp from "vscode-languageserver/node";
 import { TextDocument } from "vscode-languageserver-textdocument";
-import { TokenType, Symbol as GearSymbol, Token } from "./types";
+import path from "node:path";
 
 const connection = lsp.createConnection(lsp.ProposedFeatures.all);
 const documents = new lsp.TextDocuments(TextDocument);
-const symbolTable = new SymbolTable();
+
+const libPath = path.join(__dirname, "..", "..", "libgearlib.so")
+
+const lib = koffii.load(libPath)
+
+const gear_dump_ast    = lib.func('const char* gear_dump_ast(const char* filepath)');
+const gear_free_string = lib.func('void gear_free_string(const char* str)');
+
 
 connection.onInitialize((_params: lsp.InitializeParams): lsp.InitializeResult => {
 
@@ -23,17 +28,11 @@ connection.onInitialize((_params: lsp.InitializeParams): lsp.InitializeResult =>
 });
 
 connection.onCompletion((_params: lsp.TextDocumentPositionParams): lsp.CompletionItem[] => {
-    const allSymbols: GearSymbol[] = symbolTable.getAll();
-
-    return allSymbols.map(symbol => {
-        return {
-            label: symbol.name,
-            kind: symbol.kind === "function" ? lsp.CompletionItemKind.Function : lsp.CompletionItemKind.Variable
-        }
-    })
-
+    
+    return [];
 
 });
+
 documents.onDidOpen((event) => {
     const text: string = event.document.getText();
 
@@ -53,40 +52,13 @@ documents.onDidChangeContent((event) => {
 })
 
 function analyzeDocument(text: string, uri: string): void {
-    symbolTable.clear();
-
-    const tokens = tokenize(text);
-
-    analyze(tokens, symbolTable);
-
-    const tokenErrors = tokens.filter(token => (token.type === TokenType.Error));
-    const diagnostics: lsp.Diagnostic[] = [];
-    const validKeyWords = /\b(let|return|extern)\b/;
-
-    for (let i = 0; i < tokenErrors.length; i++) {
-        const token = tokenErrors[i]
-
-        create_Diagnostic(token);
-    }
-
-    connection.sendDiagnostics({
-        uri: uri,
-        diagnostics: diagnostics
-    })
-
-
-    function create_Diagnostic(token: Token) {
-        diagnostics.push(
-            {
-                severity: lsp.DiagnosticSeverity.Error,
-                range: {
-                    start: { line: token.row - 1, character: token.col - 1 },
-                    end: { line: token.row, character: token.col }
-                },
-                message: "Unexpected Character"
-            }
-        )
-    }
+        const filepath = uri.replace('file://', '');
+    
+    const result = gear_dump_ast(filepath);
+    
+    connection.console.log(result);
+    
+    gear_free_string(result);
 
 }
 

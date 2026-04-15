@@ -5,16 +5,17 @@ const baseConfig = {
     external: ["vscode"],
     platform: "node",
     sourcemap: true,
+    loader: {
+        ".node": "copy",   // <-- add this
+    },
 };
 
-// Bundle the client
 esbuild.build({
     ...baseConfig,
     entryPoints: ["client/src/extension.ts"],
     outfile: "client/out/extension.js",
 }).catch(() => process.exit(1));
 
-// Bundle the server
 esbuild.build({
     ...baseConfig,
     entryPoints: ["server/src/server.ts"],
