@@ -6,12 +6,11 @@ import path from "node:path";
 const connection = lsp.createConnection(lsp.ProposedFeatures.all);
 const documents = new lsp.TextDocuments(TextDocument);
 
-const libPath = path.join(__dirname, "..", "..", "libgearlib.so")
+const libPath = path.join(__dirname, "..", "./libgearlib.so")
 
 const lib = koffii.load(libPath)
 
-const gear_dump_ast    = lib.func('const char* gear_dump_ast(const char* filepath)');
-const gear_free_string = lib.func('void gear_free_string(const char* str)');
+const gear_dump_ast = lib.func();
 
 
 connection.onInitialize((_params: lsp.InitializeParams): lsp.InitializeResult => {
@@ -58,8 +57,6 @@ function analyzeDocument(text: string, uri: string): void {
     
     connection.console.log(result);
     
-    gear_free_string(result);
-
 }
 
 documents.listen(connection)

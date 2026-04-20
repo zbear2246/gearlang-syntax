@@ -1,18 +1,20 @@
-*.gear
-*.gearlang
-out
+GearLang_container/
+
+out/
+extension.js
+*.js.map
+
+node_modules/
+client/node_modules/
+server/node_modules/
 
 package-lock.json
-server/package-lock.json
 client/package-lock.json
+server/package-lock.json
 
-node_modules
-client/node_modules
-server/node_mocules
+*.gear
+*.gearlang
+
 .vscode/
-
-extension.js
-
-GearLang_container/
 
 tree.txt
