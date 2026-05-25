@@ -1,0 +1,1 @@
+# Syntax highlighting for GearLang, uses .gr, .gear, and .gearlang

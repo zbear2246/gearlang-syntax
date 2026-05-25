@@ -1,29 +1,24 @@
-# Development dependencies
 node_modules/
 client/node_modules/
 server/node_modules/
 
-# TypeScript source (only ship compiled JS)
 client/src/
 server/src/
 
-# Config & tooling
 .vscode/
 .gitignore
 eslint.config.js
 dev.sh
 
-# TypeScript configs
 tsconfig.json
 client/tsconfig.json
 server/tsconfig.json
 
-# Lock files
 package-lock.json
 client/package-lock.json
 server/package-lock.json
 
-# Local test / misc files
+
 main.gear
 client/.gearlang
 PROMPT.md

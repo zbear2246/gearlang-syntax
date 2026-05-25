@@ -2,7 +2,11 @@
     "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
     "name": "GearLang",
     "scopeName": "source.gear",
-    "fileTypes": [".gear", ".gearlang"],
+    "fileTypes": [
+        ".gear",
+        ".gearlang",
+        ".gr"
+    ],
     "patterns": [
         {
             "include": "#comments"
@@ -32,7 +36,7 @@
             "name": "comment.line.double-slash.gear"
         },
         "keywords": {
-            "match": "\\b(if|else|return|fn|extern|let)\\b",
+            "match": "\\b(fn|let|comptime|assert|test|if|else|extern|return|export|array|include)\\b",
             "name": "keyword.control.gear"
         },
         "strings": {
@@ -53,22 +57,26 @@
             ]
         },
         "types": {
-            "match": "\\b(i8|i16|i32|i64|f16|f32|f64)\\b",
+            "match": "\\b(i8|i16|i32|i64|u8|u16|u32|u64|f16|f32|f64|uf16|uf32|uf64|char|void)\\b",
             "name": "storage.type.gear"
         },
         "operators": {
             "patterns": [
                 {
-                    "match": "=>",
-                    "name": "keyword.operator.arrow.gear"
+                    "match": "=>|==|!=|>=|<=",
+                    "name": "keyword.operator.comparison.gear"
                 },
                 {
-                    "match": "[+\\-*/<>=]",
+                    "match": "\\b(and|or|not|xor|sizeofof)\\b",
+                    "name": "keyword.operator.word.gear"
+                },
+                {
+                    "match": "[+\\-*/:=<>]",
                     "name": "keyword.operator.gear"
                 },
                 {
                     "match": "#",
-                    "name": "keyword.operator.adress-of.gear"
+                    "name": "keyword.operator.address-of.gear"
                 },
                 {
                     "match": "@",
@@ -77,10 +85,6 @@
                 {
                     "match": "&",
                     "name": "keyword.operator.pointer.gear"
-                },
-                {
-                    "match": ":",
-                    "name": "punctuation.separator.gear"
                 }
             ]
         },
